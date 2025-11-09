@@ -1,87 +1,124 @@
 package com.gitlab.bluestring.myanimetracker;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gitlab.bluestring.myanimetracker.helpers.DatabaseHelper;
+
 public class RegisterActivity extends AppCompatActivity {
-    EditText eusername, eemail, epassword;
-    Button register;
-    boolean isAllFields = false;
+
+    private EditText etFullName, etEmail, etPassword, etConfirmPassword;
+    private Button btnRegister;
+    private TextView tvLoginLink;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        eusername = findViewById(R.id.username);
-        eemail = findViewById(R.id.email);
-        epassword = findViewById(R.id.password);
-        register = findViewById(R.id.regibutton);
 
-        register.setOnClickListener(new View.OnClickListener() {
+        databaseHelper = new DatabaseHelper(this);
+
+        initViews();
+        setClickListeners();
+    }
+
+    private void initViews() {
+        etFullName = findViewById(R.id.etFullName);
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
+        etConfirmPassword = findViewById(R.id.etConfirmPassword);
+        btnRegister = findViewById(R.id.btnRegister);
+        tvLoginLink = findViewById(R.id.tvLoginLink);
+    }
+
+    private void setClickListeners() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-
-            {
-                isAllFields= register();
-                if(isAllFields)
-                {
-
-                    String a= eusername.getText().toString();
-                    String b = epassword.getText().toString();
-                    Intent i = new Intent(RegisterActivity.this,MainActivity.class);
-                    i.putExtra("number1",a);
-                    i.putExtra("number2",b);
-                    startActivity(i);
-
-                }
-
-
-
+            public void onClick(View v) {
+                registerUser();
             }
         });
 
-
+        tvLoginLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
     }
 
-    private boolean register() {
-        String username = eusername.getText().toString().trim();
-        String email = eemail.getText().toString().trim();
-        String password = epassword.getText().toString().trim();
-        if (CheakAllField(username, email, password)) {
+    private void registerUser() {
+        String fullname = etFullName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-            Toast.makeText(this, "you have succesfully register", Toast.LENGTH_SHORT).show();
-return true;
+        // Validações
+        if (fullname.isEmpty()) {
+            etFullName.setError("Nome completo é obrigatório");
+            etFullName.requestFocus();
+            return;
         }
-        return false;
+
+        if (email.isEmpty()) {
+            etEmail.setError("Email é obrigatório");
+            etEmail.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            etPassword.setError("Senha é obrigatória");
+            etPassword.requestFocus();
+            return;
+        }
+
+        if (confirmPassword.isEmpty()) {
+            etConfirmPassword.setError("Confirme sua senha");
+            etConfirmPassword.requestFocus();
+            return;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Email inválido");
+            etEmail.requestFocus();
+            return;
+        }
+
+        if (password.length() < 6) {
+            etPassword.setError("Senha deve ter pelo menos 6 caracteres");
+            etPassword.requestFocus();
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            etConfirmPassword.setError("Senhas não conferem");
+            etConfirmPassword.requestFocus();
+            return;
+        }
+
+        // Verificar se email já existe
+        if (databaseHelper.checkEmailExists(email)) {
+            etEmail.setError("Email já cadastrado");
+            etEmail.requestFocus();
+            return;
+        }
+
+        // Registrar usuário
+        if (databaseHelper.addUser(email, password, fullname)) {
+            Toast.makeText(RegisterActivity.this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
+
+            // Redirecionar para login
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            finish();
+        } else {
+            Toast.makeText(RegisterActivity.this, "Erro ao cadastrar usuário", Toast.LENGTH_SHORT).show();
+        }
     }
-
-        private boolean CheakAllField (String username, String email, String password)
-        {
-            if (TextUtils.isEmpty(username)) {
-                eusername.setError("Please enter name");
-                return false;
-
-            }
-
-            if (TextUtils.isEmpty(email)) {
-                eemail.setError("please enter proper email");
-                return false;
-            }
-
-            if (TextUtils.isEmpty(password)) {
-                epassword.setError("please enter proper password");
-                return false;
-            }
-            return true;
-        }
-
-
 }
-

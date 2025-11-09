@@ -1,71 +1,86 @@
 package com.gitlab.bluestring.myanimetracker;
 
+import android.app.Activity;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
+import com.gitlab.bluestring.myanimetracker.helpers.DatabaseHelper;
+import com.gitlab.bluestring.myanimetracker.model.User;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.gitlab.bluestring.myanimetracker.databinding.ActivityMainBinding;
+public class MainActivity extends Activity {
 
-public class MainActivity extends AppCompatActivity {
+    private TextView tvWelcome;
+    private DatabaseHelper databaseHelper;
+    private String userEmail;
 
-    EditText username,password;
-    Button eregister,elogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        eregister = findViewById(R.id.register1);
-        elogin= findViewById(R.id.login);
-        username = findViewById(R.id.username);
-        password = findViewById(R.id.password);
 
-        Intent i = getIntent();
-        String a = " ";
-        String b = " ";
-        try {
-            a = i.getStringExtra("number1");
-            b = i.getStringExtra("number2");
-        } catch (NumberFormatException e) {
-            Log.d("error1", "user not give input");
-
+        // Verificar se usuário está logado
+        if (!isUserLoggedIn()) {
+            redirectToLogin();
+            return;
         }
-        username.setText(a);
-        password.setText(b);
 
-        eregister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        databaseHelper = new DatabaseHelper(this);
+        tvWelcome = findViewById(R.id.tvWelcome);
 
-                Intent in = new Intent(MainActivity.this,RegisterActivity.class);
+        // Obter email do usuário logado
+        SharedPreferences sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE);
+        userEmail = sharedPreferences.getString("user_email", "");
 
-                startActivity(in);
+        // Carregar dados do usuário
+        loadUserData();
+    }
 
+    private void loadUserData() {
+        User user = databaseHelper.getUser(userEmail);
+        if (user != null) {
+            tvWelcome.setText(String.format("Welcome, %s!", user.getFullname()));
+        }
+    }
 
-            }
-        });
+    private boolean isUserLoggedIn() {
+        SharedPreferences sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE);
+        return sharedPreferences.getBoolean("is_logged_in", false);
+    }
 
-       /* elogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    private void redirectToLogin() {
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        finish();
+    }
 
+    private void logout() {
+        SharedPreferences sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
 
-            }
-        });
-*/
+        Toast.makeText(this, "Logout realizado", Toast.LENGTH_SHORT).show();
+        redirectToLogin();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_logout) {
+            logout();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
