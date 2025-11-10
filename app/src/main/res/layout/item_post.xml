@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:contentDescription="Anime image" />
+                android:contentDescription="@string/anime_image" />
 
             <ImageView
                 android:id="@+id/favoriteIcon"
