@@ -46,4 +46,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Retrofit e Gson
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // OkHttp e Logging Interceptor
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    // Glide para carregar imagens
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 }

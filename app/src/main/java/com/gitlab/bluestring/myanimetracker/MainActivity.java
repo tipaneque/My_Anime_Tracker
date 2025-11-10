@@ -1,24 +1,24 @@
 package com.gitlab.bluestring.myanimetracker;
 
 import android.app.Activity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.gitlab.bluestring.myanimetracker.helpers.DatabaseHelper;
 import com.gitlab.bluestring.myanimetracker.model.User;
-
 
 public class MainActivity extends Activity {
 
     private TextView tvWelcome;
     private DatabaseHelper databaseHelper;
     private String userEmail;
+    private Button btnGallery, btnProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,8 @@ public class MainActivity extends Activity {
 
         databaseHelper = new DatabaseHelper(this);
         tvWelcome = findViewById(R.id.tvWelcome);
+        btnGallery = findViewById(R.id.btnGallery);
+        btnProfile = findViewById(R.id.btnProfile);
 
         // Obter email do usuário logado
         SharedPreferences sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE);
@@ -40,6 +42,8 @@ public class MainActivity extends Activity {
 
         // Carregar dados do usuário
         loadUserData();
+
+        setupClickListeners();
     }
 
     private void loadUserData() {
@@ -47,6 +51,24 @@ public class MainActivity extends Activity {
         if (user != null) {
             tvWelcome.setText(String.format("Welcome, %s!", user.getFullname()));
         }
+    }
+
+    private void setupClickListeners() {
+        btnGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navegar para a Gallery Activity
+                startActivity(new Intent(MainActivity.this, GalleryActivity.class));
+            }
+        });
+
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navegar para Profile Activity (se tiver)
+                Toast.makeText(MainActivity.this, "Profile Section", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean isUserLoggedIn() {
