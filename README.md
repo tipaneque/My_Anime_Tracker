@@ -56,9 +56,9 @@ The goal of this app is to provide a simple, smooth, and intuitive experience fo
 
 ##  Roadmap
 
-- [ ] Implement MyAnimeList OAuth2 authentication.
+- [x] Implement MyAnimeList OAuth2 authentication.
 - [ ] Add favorites system and search history.
-- [ ] Implement image caching and offline data support.
+- [x] Implement image caching and offline data support.
 - [ ] Add dark mode.
 - [ ] Publish on Google Play Store.
 
@@ -68,4 +68,4 @@ The goal of this app is to provide a simple, smooth, and intuitive experience fo
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/MyAnimeTracker.git
+   git clone https://github.com/LarsenTivane/dssmv_demo.git
