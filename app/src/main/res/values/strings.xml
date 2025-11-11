@@ -10,4 +10,21 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="sign_in"><u>Sign in </u></string>
+    <string name="full_name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="login">LOGIN</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="need_an_account_sign_up">Need an Account? Sign up</string>
+    <string name="register_link"><u>Register</u></string>
+    <string name="welcome">Welcome</string>
+    <string name="anime_image">Anime image</string>
+    <string name="search">Search</string>
+    <string name="refresh">Refresh</string>
+    <string name="my_profile">My Profile</string>
+    <string name="browse_anime_gallery">Browse Anime Gallery</string>
 </resources>

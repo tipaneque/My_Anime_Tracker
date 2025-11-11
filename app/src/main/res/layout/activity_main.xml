@@ -1,103 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="@drawable/farytail_background"
+              android:orientation="vertical"
 
-    tools:context=".MainActivity">
+              tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/signin"
-        android:text="Sign.in"
-        android:textColor="@color/black"
-        android:textSize="35dp"
-        android:layout_margin="50dp"
-        android:gravity="center"
-        android:textStyle="bold"
-/>
+            android:id="@+id/tvWelcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30sp"
+            android:text="@string/welcome"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_margin="50dp"
+            android:textSize="12pt" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/username"
-        android:layout_below="@+id/signin"
-
-
-        android:hint="Username"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:layout_margin="10dp"
-        android:padding="20dp"
-        android:drawableLeft="@drawable/ic_baseline_person_24"
-        android:drawablePadding="5dp"
-        />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/password"
-        android:layout_below="@+id/username"
-
-        android:hint="Password"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:layout_margin="10dp"
-        android:padding="20dp"
-        android:drawableLeft="@drawable/ic_baseline_lock_24"
-        android:drawablePadding="5dp"
-        />
 
 
     <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/forget"
-        android:layout_alignRight="@id/forget"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/design_default_color_on_secondary"
-        android:text="LOGIN" />
-
-    <TextView
-        android:id="@+id/forget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/password"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="Forget Password?" />
-
+            android:id="@+id/btnGallery"
+            android:layout_width="280dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/browse_anime_gallery"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button"
+            app:backgroundTint="@null"
+            android:padding="16dp" />
 
     <Button
-        android:id="@+id/register1"
-        android:layout_width="395dp"
-        android:layout_height="59dp"
-        android:layout_below="@id/login"
-        android:layout_alignParentBottom="true"
-
-
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="227dp"
-        android:layout_marginBottom="58dp"
-        android:background="?android:attr/selectableItemBackground"
-
-        android:text="Need an Account? Sign up"
-        android:textColor="@color/black"
-
-        android:textStyle="bold"/>
-
-
-</RelativeLayout>
+            android:id="@+id/btnProfile"
+            android:layout_width="280dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/my_profile"
+            android:textSize="18sp"
+            android:background="@drawable/button"
+            app:backgroundTint="@null"
+            android:layout_marginTop="20dp"
+            android:padding="16dp" />
+</LinearLayout>
