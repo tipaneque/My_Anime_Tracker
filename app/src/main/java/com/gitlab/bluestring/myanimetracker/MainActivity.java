@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Verificar se usuário está logado
+        // Check if user is logged in
         if (!isUserLoggedIn()) {
             redirectToLogin();
             return;
@@ -38,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
         btnGallery = findViewById(R.id.btnGallery);
         btnProfile = findViewById(R.id.btnProfile);
 
-        // Obter email do usuário logado
+        // Get the logged user email
         SharedPreferences sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE);
         userEmail = sharedPreferences.getString("user_email", "");
 
-        // Carregar dados do usuário
+        // Load the logged user data
         loadUserData();
 
         setupClickListeners();
@@ -56,20 +55,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        btnGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navegar para a Gallery Activity
-                startActivity(new Intent(MainActivity.this, GalleryActivity.class));
-            }
+        btnGallery.setOnClickListener(v -> {
+            // Navigate to Gallery Activity
+            startActivity(new Intent(MainActivity.this, GalleryActivity.class));
         });
 
-        btnProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navegar para Profile Activity (se tiver)
-                Toast.makeText(MainActivity.this, "Profile Section", Toast.LENGTH_SHORT).show();
-            }
+        btnProfile.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Profile Section", Toast.LENGTH_SHORT).show();
         });
     }
 

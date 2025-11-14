@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.gitlab.bluestring.myanimetracker.adapters.PostAdapter;
+import com.gitlab.bluestring.myanimetracker.adapters.TagAdapter;
 import com.gitlab.bluestring.myanimetracker.model.Post;
 import com.gitlab.bluestring.myanimetracker.model.Tag;
 import com.gitlab.bluestring.myanimetracker.model.FavoriteResponse;
@@ -49,7 +50,7 @@ public class GalleryActivity extends AppCompatActivity {
         postsRecyclerView = findViewById(R.id.postsRecyclerView);
         toolbar = findViewById(R.id.toolbar);
 
-        // Configurar toolbar - AGORA DEVE FUNCIONAR
+        // Set toobal
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -150,21 +151,15 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
     private void updateTagsSpinner(List<Tag> tags) {
-        if (tagsSpinner != null && tags != null) {
-            ArrayAdapter<Tag> spinnerAdapter = new ArrayAdapter<>(
-                    this,
-                    android.R.layout.simple_spinner_item,
-                    tags
-            );
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            TagAdapter spinnerAdapter = new TagAdapter(this, tags);
             tagsSpinner.setAdapter(spinnerAdapter);
-        }
+
     }
 
     private void openPostDetail(int postId) {
         Toast.makeText(this, "Abrir detalhes do post: " + postId, Toast.LENGTH_SHORT).show();
 
-        // Exemplo: mudar rating usando PUT
+        // Example: change rating usingpost
         viewModel.updatePostRating(postId, "safe");
     }
 

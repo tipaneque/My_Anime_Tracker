@@ -14,6 +14,7 @@ navigationUi = "2.9.3"
 okhttp = "4.11.0"
 retrofit = "2.9.0"
 retrofitVersion = "3.1.0-SNAPSHOT"
+roomCompiler = "2.8.3"
 
 [libraries]
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
@@ -33,6 +34,7 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-v310snapshot = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -10,30 +10,34 @@ import java.util.List;
 
 public interface DanbooruApiService {
 
-    // === MÉTODO 1: GET - Buscar posts ===
+    // Fetch posts
     @GET("posts.json")
     Call<List<Post>> getPosts(
             @Query("tags") String tags,
             @Query("limit") int limit
     );
 
-    // === MÉTODO 2: GET - Buscar tags populares ===
+    // Fetch popular tags
     @GET("tags.json")
     Call<List<com.gitlab.bluestring.myanimetracker.model.Tag>> getPopularTags(
             @Query("limit") int limit,
             @Query("search[order]") String order
     );
 
-    // === MÉTODO 3: GET - Buscar post por ID ===
+    // Fetch post by id
     @GET("posts/{id}.json")
     Call<Post> getPostById(@Path("id") int postId);
 
-    // === MÉTODO 4: POST - Favoritar post ===
+    // ===  POST - Favoritar post ===
     @FormUrlEncoded
     @POST("favorites.json")
-    Call<FavoriteResponse> favoritePost(@Field("post_id") int postId);
+    Call<FavoriteResponse> favoritePost(
+            @Field("post_id") int postId,
+            @Field("login") String username,
+            @Field("api_key") String apiKey
+    );
 
-    // === MÉTODO 5: PUT - Atualizar post (simulado) ===
+    // update post
     @FormUrlEncoded
     @PUT("posts/{id}.json")
     Call<Post> updatePostRating(
@@ -41,7 +45,7 @@ public interface DanbooruApiService {
             @Field("post[rating]") String newRating
     );
 
-    // === MÉTODO 6: DELETE - Remover favorito ===
+    // Remove favorite
     @DELETE("favorites/{postId}.json")
     Call<FavoriteResponse> unfavoritePost(@Path("postId") int postId);
 }

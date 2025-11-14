@@ -1,7 +1,6 @@
 package com.gitlab.bluestring.myanimetracker;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,19 +37,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setClickListeners() {
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
-            }
-        });
+        btnRegister.setOnClickListener(v -> registerUser());
 
-        tvLoginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                finish();
-            }
+        tvLoginLink.setOnClickListener(v -> {
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            finish();
         });
     }
 
@@ -60,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-        // Validações
+        // Validations
         if (fullname.isEmpty()) {
             etFullName.setError("Nome completo é obrigatório");
             etFullName.requestFocus();
@@ -103,18 +94,17 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Verificar se email já existe
+        // Check if email exists
         if (databaseHelper.checkEmailExists(email)) {
             etEmail.setError("Email já cadastrado");
             etEmail.requestFocus();
             return;
         }
 
-        // Registrar usuário
+        // Register a new user
         if (databaseHelper.addUser(email, password, fullname)) {
             Toast.makeText(RegisterActivity.this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
 
-            // Redirecionar para login
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             finish();
         } else {
