@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -308,12 +309,12 @@ public class AnimeDetailActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<UpdateAnimeStatusResponse>() {
             @Override
-            public void onResponse(Call<UpdateAnimeStatusResponse> call, Response<UpdateAnimeStatusResponse> response) {
+            public void onResponse(@NonNull Call<UpdateAnimeStatusResponse> call, @NonNull Response<UpdateAnimeStatusResponse> response) {
                 showLoading(false);
 
                 if (response.isSuccessful()) {
                     Log.d("AnimeDetail", "Anime status updated successfully");
-                    Toast.makeText(AnimeDetailActivity.this, "Anime added to your list! ✅", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AnimeDetailActivity.this, "Anime added to your list!", Toast.LENGTH_SHORT).show();
                     updateButtonState(true);
 
                     // Back to list after a delay
@@ -335,7 +336,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UpdateAnimeStatusResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<UpdateAnimeStatusResponse> call, @NonNull Throwable t) {
                 showLoading(false);
                 Log.e("AnimeDetail", "Network error: " + t.getMessage());
                 Toast.makeText(AnimeDetailActivity.this, "Network error", Toast.LENGTH_SHORT).show();
@@ -358,11 +359,11 @@ public class AnimeDetailActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 showLoading(false);
 
                 if (response.isSuccessful()) {
-                    Toast.makeText(AnimeDetailActivity.this, "Anime removed from list ✅", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AnimeDetailActivity.this, "Anime removed from list", Toast.LENGTH_SHORT).show();
                     updateButtonState(false);
 
                     // Back to list after a delay
@@ -377,7 +378,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 showLoading(false);
                 Log.e("AnimeDetail", "Network error: " + t.getMessage());
                 Toast.makeText(AnimeDetailActivity.this, "Network error", Toast.LENGTH_SHORT).show();

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -93,7 +94,7 @@ public class AnimeListActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<UserAnimeListResponse> call, Response<UserAnimeListResponse> response) {
+            public void onResponse(@NonNull Call<UserAnimeListResponse> call, @NonNull Response<UserAnimeListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     UserAnimeListResponse animeResponse = response.body();
                     List<UserAnimeListItem> animeList = animeResponse.getData();
@@ -121,7 +122,7 @@ public class AnimeListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserAnimeListResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserAnimeListResponse> call, @NonNull Throwable t) {
                 Log.e("AnimeList", "Network error: " + t.getMessage());
                 Toast.makeText(AnimeListActivity.this, "Network error", Toast.LENGTH_SHORT).show();
             }
