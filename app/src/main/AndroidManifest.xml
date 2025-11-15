@@ -20,21 +20,20 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="myanimetracker" android:host="auth"/>
+            </intent-filter>
         </activity>
 
 
-        <activity
-            android:name=".GalleryActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.MyAnimeTracker.NoActionBar"/>
-
-        <activity android:name=".LoginActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MyAnimeTracker.NoActionBar"/>
-        <activity android:name=".RegisterActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MyAnimeTracker.NoActionBar"/>
+        <activity android:name=".AnimeListActivity" />
+        <activity android:name=".AnimeDetailActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".TrendingActivity"/>
     </application>
 
 </manifest>

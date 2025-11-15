@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.gitlab.bluestring.myanimetracker"
-    compileSdk = 35
+    namespace = "com.github.tipaneque.myanimetracker"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.gitlab.bluestring.myanimetracker"
+        applicationId = "com.github.tipaneque.myanimetracker"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -29,34 +29,27 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
 
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.lifecycle.livedata.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
-    implementation(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // Retrofit e Gson
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-
-    // OkHttp e Logging Interceptor
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-
-    // Glide para carregar imagens
-    implementation(libs.glide)
-    annotationProcessor(libs.compiler)
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+    implementation ("com.google.android.material:material:1.9.0")
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation ("androidx.recyclerview:recyclerview:1.3.1")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
 }
