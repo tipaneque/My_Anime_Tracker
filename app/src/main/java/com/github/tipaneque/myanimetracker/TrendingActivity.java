@@ -49,7 +49,7 @@ public class TrendingActivity extends AppCompatActivity {
 
         initializeViews();
         setupRecyclerView();
-        loadTrendingAnime(currentRankingType, 0, true); // Primeiro carregamento
+        loadTrendingAnime(currentRankingType, 0, true); // Fisrt load
     }
 
     private void initializeViews() {
@@ -61,7 +61,7 @@ public class TrendingActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Configurar botão "Load More"
+        // Set button "Load More"
         btnLoadMore.setOnClickListener(v -> {
             if (!isLoading && hasMoreData) {
                 loadMoreAnime();
@@ -76,7 +76,7 @@ public class TrendingActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(anime -> openAnimeDetails(anime));
         recyclerView.setAdapter(adapter);
 
-        // Scroll listener para carregar mais automaticamente
+        // Scroll listener to load more automatically
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -87,7 +87,7 @@ public class TrendingActivity extends AppCompatActivity {
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-                // Carregar mais quando estiver perto do final
+                // Load more when you're nearing the end.
                 if (!isLoading && hasMoreData) {
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 5
                             && firstVisibleItemPosition >= 0) {
@@ -138,14 +138,14 @@ public class TrendingActivity extends AppCompatActivity {
                         }
 
                         if (offset == 0) {
-                            // Primeiro carregamento - substituir lista
+                            // First load - replace list
                             adapter.updateData(newAnimeList);
                         } else {
-                            // Carregamento adicional - adicionar à lista
+                            // Additional loading - add to list
                             adapter.addData(newAnimeList);
                         }
 
-                        // Verificar se há mais dados
+                        // Check if there is more data.
                         hasMoreData = newAnimeList.size() == LIMIT;
                         currentOffset = offset + newAnimeList.size();
 
@@ -155,7 +155,7 @@ public class TrendingActivity extends AppCompatActivity {
                         Log.d("Trending", "Loaded " + newAnimeList.size() + " anime. Total: " + currentOffset);
 
                     } else {
-                        // Não há mais dados
+                        // No more data
                         hasMoreData = false;
                         if (offset == 0) {
                             showEmptyState(true);

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +31,7 @@ public class SearchActivity extends AppCompatActivity {
     private EditText etSearch;
     private RecyclerView recyclerView;
     private AnimeAdapter adapter;
-    private Handler handler = new Handler(Looper.getMainLooper());
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private static final int DEBOUNCE_DELAY = 500;
 
     @Override
@@ -56,13 +57,9 @@ public class SearchActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         adapter = new AnimeAdapter(new ArrayList<>(), false);
 
-        //ADICIONAR ESTE LISTENER DE CLIQUE - CRÍTICO!
-        adapter.setOnItemClickListener(new AnimeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Anime anime) {
-                Log.d("SearchActivity", " Search result clicked: " + anime.getTitle() + " (ID: " + anime.getId() + ")");
-                openAnimeDetails(anime);
-            }
+        adapter.setOnItemClickListener(anime -> {
+            Log.d("SearchActivity", " Search result clicked: " + anime.getTitle() + " (ID: " + anime.getId() + ")");
+            openAnimeDetails(anime);
         });
 
         recyclerView.setAdapter(adapter);
@@ -77,7 +74,7 @@ public class SearchActivity extends AppCompatActivity {
         intent.putExtra("anime_title", anime.getTitle());
         startActivity(intent);
 
-        // Animação opcional
+        // Otional animation
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
@@ -91,20 +88,17 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(final Editable s) {
-                // Remove callbacks anteriores
+                // Remove previous callbacks
                 handler.removeCallbacksAndMessages(null);
 
-                // Agenda nova busca
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        String query = s.toString().trim();
-                        if (query.length() >= 3) {
-                            searchAnime(query);
-                        } else if (query.isEmpty()) {
-                            adapter.updateData(new ArrayList<>());
-                            Log.d("SearchActivity", "Search cleared");
-                        }
+                // Schedules new search
+                handler.postDelayed(() -> {
+                    String query = s.toString().trim();
+                    if (query.length() >= 3) {
+                        searchAnime(query);
+                    } else if (query.isEmpty()) {
+                        adapter.updateData(new ArrayList<>());
+                        Log.d("SearchActivity", "Search cleared");
                     }
                 }, DEBOUNCE_DELAY);
             }
@@ -124,7 +118,7 @@ public class SearchActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<AnimeSearchResponse>() {
             @Override
-            public void onResponse(Call<AnimeSearchResponse> call, Response<AnimeSearchResponse> response) {
+            public void onResponse(@NonNull Call<AnimeSearchResponse> call, @NonNull Response<AnimeSearchResponse> response) {
                 Log.d("SearchActivity", "Response code: " + response.code());
 
                 if (response.isSuccessful() && response.body() != null) {
@@ -165,7 +159,7 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<AnimeSearchResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<AnimeSearchResponse> call, @NonNull Throwable t) {
                 Log.e("SearchActivity", "Network error: " + t.getMessage());
                 runOnUiThread(() ->
                         Toast.makeText(SearchActivity.this, "Network error", Toast.LENGTH_SHORT).show());

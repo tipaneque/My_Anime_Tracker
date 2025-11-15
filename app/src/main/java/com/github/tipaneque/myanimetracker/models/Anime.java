@@ -29,7 +29,6 @@ public class Anime {
     @SerializedName("synopsis")
     private String synopsis;
 
-    // Getters and Setters para TODOS os campos
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

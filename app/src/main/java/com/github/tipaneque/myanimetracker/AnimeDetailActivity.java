@@ -51,10 +51,10 @@ public class AnimeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anime_detail);
 
-        // Inicializar AuthManager
+        // Initialize AuthManager
         authManager = AuthManager.getInstance(this);
 
-        // Obter dados do intent
+        // Get Intent data
         animeId = getIntent().getIntExtra("anime_id", 0);
         animeTitle = getIntent().getStringExtra("anime_title");
 
@@ -86,7 +86,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
         btnDelete = findViewById(R.id.btnDelete);
         progressBar = findViewById(R.id.progressBar);
 
-        // Configurar título inicial
+        // set initial title
         if (animeTitle != null) {
             tvTitle.setText(animeTitle);
         }
@@ -105,7 +105,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
         scoreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spScore.setAdapter(scoreAdapter);
 
-        // Listener para mudanças de status
+        // Status changes listener
         spStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -216,10 +216,10 @@ public class AnimeDetailActivity extends AppCompatActivity {
     }
 
     private void displayAnimeDetails(Anime anime) {
-        // Título
+        // Title
         tvTitle.setText(anime.getTitle());
 
-        // Imagem
+        // Image
         if (anime.getMain_picture() != null && anime.getMain_picture().getMedium() != null) {
             Glide.with(this)
                     .load(anime.getMain_picture().getMedium())
@@ -227,7 +227,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
                     .into(ivAnimeCover);
         }
 
-        // Sinopse
+        // Synopsis
         if (anime.getSynopsis() != null && !anime.getSynopsis().isEmpty()) {
             tvSynopsis.setText(anime.getSynopsis());
         } else {
@@ -241,10 +241,10 @@ public class AnimeDetailActivity extends AppCompatActivity {
             tvScore.setText("Score: N/A");
         }
 
-        // Episódios
+        // Episodes
         tvEpisodes.setText(String.format("Episodes: %d", anime.getEpisodes()));
 
-        // Tipo e Status
+        // Type and Status
         if (anime.getMedia_type() != null) {
             tvType.setText(String.format("Type: %s", anime.getMedia_type()));
         }
@@ -263,7 +263,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
         String accessToken = authManager.getAccessToken();
         ApiService apiService = ApiClient.getClientWithAuth(accessToken).create(ApiService.class);
 
-        // Buscar apenas este anime na lista do usuário
+        // Search only for this anime in the user's list.
         Call<UserAnimeListResponse> call = apiService.getUserAnimeList(
                 "list_status",
                 null,
@@ -271,8 +271,8 @@ public class AnimeDetailActivity extends AppCompatActivity {
                 0
         );
 
-        // Nota: Esta é uma verificação simplificada
-        // Em uma implementação real, você buscaria o anime específico
+        // Note: This is a simplified check
+        // In a real implementation, you would search for the specific anime
         updateButtonState(true);
     }
 
@@ -316,7 +316,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
                     Toast.makeText(AnimeDetailActivity.this, "Anime added to your list! ✅", Toast.LENGTH_SHORT).show();
                     updateButtonState(true);
 
-                    // Voltar para a lista após um delay
+                    // Back to list after a delay
                     new android.os.Handler().postDelayed(() -> {
                         finish();
                     }, 1500);
@@ -356,7 +356,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
         ApiService apiService = ApiClient.getClientWithAuth(accessToken).create(ApiService.class);
         Call<Void> call = apiService.deleteAnimeFromList(animeId);
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 showLoading(false);
@@ -365,7 +365,7 @@ public class AnimeDetailActivity extends AppCompatActivity {
                     Toast.makeText(AnimeDetailActivity.this, "Anime removed from list ✅", Toast.LENGTH_SHORT).show();
                     updateButtonState(false);
 
-                    // Voltar para a lista após um delay
+                    // Back to list after a delay
                     new android.os.Handler().postDelayed(() -> {
                         finish();
                     }, 1500);

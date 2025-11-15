@@ -115,7 +115,7 @@
 
             </LinearLayout>
 
-            <!-- Status Badge (apenas para lista do usuário) -->
+            <!-- Status Badge (for user list only) -->
             <TextView
                 android:id="@+id/tvStatusBadge"
                 android:layout_width="wrap_content"

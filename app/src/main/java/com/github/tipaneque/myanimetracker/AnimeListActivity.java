@@ -47,7 +47,7 @@ public class AnimeListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         emptyText = findViewById(R.id.emptyText);
 
-        // Configurar RecyclerView
+        // Set RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         findViewById(R.id.btnBackList).setOnClickListener(v -> finish());
     }
@@ -55,14 +55,8 @@ public class AnimeListActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         adapter = new AnimeAdapter(new ArrayList<>(), true);
 
-
-        adapter.setOnItemClickListener(new AnimeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Anime anime) {
-                // Abrir AnimeDetailActivity quando clicar em um anime
-                openAnimeDetails(anime);
-            }
-        });
+        // Open AnimeDetailActivity when clicking on an anime.
+        adapter.setOnItemClickListener(this::openAnimeDetails);
 
         recyclerView.setAdapter(adapter);
     }
@@ -75,7 +69,7 @@ public class AnimeListActivity extends AppCompatActivity {
         intent.putExtra("anime_title", anime.getTitle());
         startActivity(intent);
 
-        // Opcional: adicionar animação
+        // Optional: add animation
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
@@ -97,7 +91,7 @@ public class AnimeListActivity extends AppCompatActivity {
                 0
         );
 
-        call.enqueue(new Callback<UserAnimeListResponse>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<UserAnimeListResponse> call, Response<UserAnimeListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

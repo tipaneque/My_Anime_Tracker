@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.tipaneque.myanimetracker.auth.AuthManager;
 import com.github.tipaneque.myanimetracker.models.TokenResponse;
 import com.github.tipaneque.myanimetracker.network.ApiClient;
-import com.github.tipaneque.myanimetracker.network.ApiService;
 import com.github.tipaneque.myanimetracker.network.MALOAuthService;
 import com.github.tipaneque.myanimetracker.network.MALOAuthServiceScheme2;
 import com.github.tipaneque.myanimetracker.utils.PKCEUtils;
@@ -100,10 +99,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // NO MainActivity.java - CORRIGIR O MÉTODO
     private void startMALAuthentication() {
         String codeVerifier = PKCEUtils.generateCodeVerifier();
-        String codeChallenge = codeVerifier; // ← MESMO que o verifier para "plain"
         String state = PKCEUtils.generateRandomState();
 
         authManager.saveAuthSession(codeVerifier, state);
@@ -112,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
                 "response_type=code" +
                 "&client_id=" + CLIENT_ID +
                 "&redirect_uri=" + Uri.encode(REDIRECT_URI) +
-                "&code_challenge=" + codeChallenge +
-                "&code_challenge_method=plain" + // ← ⚠️ MUDAR PARA "plain"
+                "&code_challenge=" + codeVerifier +
+                "&code_challenge_method=plain" +
                 "&state=" + state;
 
         Log.d("OAuth", "Using PLAIN method as per documentation");
@@ -137,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             if (error != null) {
                 Toast.makeText(this, "Auth error: " + error + " - " + errorDescription, Toast.LENGTH_LONG).show();
             } else if (authorizationCode != null && receivedState != null) {
-                // Valida state para segurança
+                // Validate state for security.
                 String savedState = authManager.getState();
                 if (receivedState.equals(savedState)) {
                     exchangeCodeForToken(authorizationCode);
@@ -151,15 +148,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // NO MainActivity.java - ACELERAR O PROCESSO
-    // NO MainActivity.java - USAR O NOVO CLIENTE
     private void exchangeCodeForToken(String authorizationCode) {
         String codeVerifier = authManager.getCodeVerifier();
 
         Log.d("OAuth", "=== TOKEN EXCHANGE ===");
         Log.d("OAuth", "Using HTTP Basic Auth (Scheme 1)");
 
-        // PRIMEIRO: Tentar Scheme 1 (HTTP Basic Auth)
+        // FIRST: Try Scheme 1 (HTTP Basic Auth)
         MALOAuthService oauthService = ApiClient.getOAuthClient().create(MALOAuthService.class);
 
         Call<TokenResponse> call = oauthService.getAccessToken(
@@ -169,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 codeVerifier
         );
 
-        call.enqueue(new Callback<TokenResponse>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -190,26 +185,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void tryScheme2(String authorizationCode, String codeVerifier) {
-        // SEGUNDO: Tentar Scheme 2 (client no body)
+        // SECOND: Try Scheme 2 (client in the body)
         MALOAuthServiceScheme2 oauthService = ApiClient.getOAuthClientWithBodyAuth().create(MALOAuthServiceScheme2.class);
 
         Call<TokenResponse> call = oauthService.getAccessToken(
                 CLIENT_ID,
-                "", // client_secret vazio para Android
+                "", // Empty client_secret for Android
                 "authorization_code",
                 authorizationCode,
                 REDIRECT_URI,
                 codeVerifier
         );
 
-        call.enqueue(new Callback<TokenResponse>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d("OAuth", "🎉 SUCCESS with Scheme 2!");
                     handleTokenSuccess(response.body());
                 } else {
-                    Log.e("OAuth", "❌ Both schemes failed");
+                    Log.e("OAuth", " Both schemes failed");
                     handleTokenError(response);
                 }
             }
@@ -243,42 +238,6 @@ public class MainActivity extends AppCompatActivity {
 
         runOnUiThread(() ->
                 Toast.makeText(MainActivity.this, "Authentication failed", Toast.LENGTH_LONG).show());
-    }
-
-    private void performTokenExchange(String code, String verifier) {
-        ApiService apiService = ApiClient.getOAuthClient().create(ApiService.class);
-
-        Call<TokenResponse> call = apiService.getAccessToken(
-                "authorization_code",
-                code,
-                verifier,
-                REDIRECT_URI
-        );
-
-        call.enqueue(new Callback<TokenResponse>() {
-            @Override
-            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d("OAuth", "🎉 TOKEN EXCHANGE SUCCESS!");
-                    // ... sucesso
-                } else {
-                    Log.e("OAuth", "❌ Token exchange failed: " + response.code());
-
-                    // TENTAR NOVAMENTE com fresh session
-                    if (response.code() == 400) {
-                        runOnUiThread(() -> {
-                            Toast.makeText(MainActivity.this,
-                                    "Session expired, please try again", Toast.LENGTH_LONG).show();
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<TokenResponse> call, Throwable t) {
-                Log.e("OAuth", "Network error: " + t.getMessage());
-            }
-        });
     }
 
     private void logout() {

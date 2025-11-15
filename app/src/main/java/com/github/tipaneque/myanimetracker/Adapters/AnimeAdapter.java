@@ -23,7 +23,7 @@ import java.util.List;
 
 public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder> {
 
-    private List<Object> animeList; // ✅ MUDAR para List<Object> para suportar addData
+    private List<Object> animeList;
     private OnItemClickListener listener;
     private boolean showStatusBadge = false;
 
@@ -32,7 +32,6 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
     }
 
     public AnimeAdapter(List<?> animeList) {
-        // ✅ Converter para List<Object> mantendo os dados
         this.animeList = animeList != null ? new ArrayList<Object>(animeList) : new ArrayList<Object>();
     }
 
@@ -45,7 +44,6 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
         this.listener = listener;
     }
 
-    // ✅ MÉTODO ORIGINAL - Substitui toda a lista
     public void updateData(List<?> newAnimeList) {
         this.animeList.clear();
         if (newAnimeList != null) {
@@ -55,7 +53,6 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
         Log.d("AnimeAdapter", "Data updated with " + (newAnimeList != null ? newAnimeList.size() : 0) + " items. Total: " + animeList.size());
     }
 
-    // ✅ NOVO MÉTODO - Adiciona dados à lista existente (PAGINAÇÃO)
     public void addData(List<?> newAnimeList) {
         if (newAnimeList != null && !newAnimeList.isEmpty()) {
             int startPosition = animeList.size();
@@ -67,12 +64,10 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
         }
     }
 
-    // ✅ MÉTODO para obter a quantidade total de itens
     public int getTotalItemCount() {
         return animeList != null ? animeList.size() : 0;
     }
 
-    // ✅ MÉTODO para limpar a lista
     public void clearData() {
         int oldSize = animeList.size();
         animeList.clear();
@@ -99,7 +94,7 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
         if (anime != null) {
             holder.bind(anime, listener, showStatusBadge);
 
-            // Se for UserAnimeListItem, obter o status da lista
+            // if it's UserAnimeListItem, get the list state
             if (showStatusBadge && animeList.get(position) instanceof UserAnimeListItem) {
                 UserAnimeListItem userItem = (UserAnimeListItem) animeList.get(position);
                 ListStatus listStatus = userItem.getListStatus();
@@ -135,7 +130,6 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
         return animeList != null ? animeList.size() : 0;
     }
 
-    // ✅ ViewHolder (mantém igual - já está ótimo!)
     static class AnimeViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivAnime, ivFavorite;
         private TextView tvTitle, tvSynopsis, tvScore, tvType, tvEpisodes, tvStatusBadge;

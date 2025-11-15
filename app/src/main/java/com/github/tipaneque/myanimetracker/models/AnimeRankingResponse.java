@@ -11,7 +11,7 @@ public class AnimeRankingResponse {
     @SerializedName("paging")
     private Paging paging;
 
-    // Getters and Setters
+
     public List<RankingAnimeNode> getData() {
         return data;
     }

@@ -14,7 +14,6 @@ public class ApiClient {
 
     private static Retrofit retrofit = null;
 
-    // NO ApiClient.java - ADICIONAR CLIENT ID NAS REQUESTS PÚBLICAS
     public static Retrofit getClient() {
         if (retrofit == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -24,7 +23,7 @@ public class ApiClient {
                     .addInterceptor(chain -> {
                         okhttp3.Request original = chain.request();
                         okhttp3.Request.Builder requestBuilder = original.newBuilder()
-                                .header("X-MAL-CLIENT-ID", CLIENT_ID) // ← ADICIONAR ESTE HEADER
+                                .header("X-MAL-CLIENT-ID", CLIENT_ID)
                                 .method(original.method(), original.body());
                         return chain.proceed(requestBuilder.build());
                     })
@@ -65,7 +64,6 @@ public class ApiClient {
                 .build();
     }
 
-    // CLIENTE OAuth COM HTTP BASIC AUTH (Scheme 1)
     public static Retrofit getOAuthClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -99,7 +97,7 @@ public class ApiClient {
                 .build();
     }
 
-    // CLIENTE OAuth ALTERNATIVO (Scheme 2)
+   // Scheme 2: Alternative OAuth client
     public static Retrofit getOAuthClientWithBodyAuth() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);

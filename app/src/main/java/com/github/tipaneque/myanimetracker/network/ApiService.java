@@ -18,7 +18,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    // GET - Buscar animes
+    // GET - Fetch animes
     @GET("anime")
     Call<AnimeSearchResponse> searchAnime(
             @Query("q") String query,
@@ -27,14 +27,14 @@ public interface ApiService {
             @Query("fields") String fields
     );
 
-    // GET - Detalhes de um anime
+    // GET - Details of one anime
     @GET("anime/{anime_id}")
     Call<Anime> getAnimeDetails(
             @Path("anime_id") int animeId,
             @Query("fields") String fields
     );
 
-    // GET - Lista de animes do usuário
+    // GET - User's anime list
     @GET("users/@me/animelist")
     Call<UserAnimeListResponse> getUserAnimeList(
             @Query("fields") String fields,
@@ -43,7 +43,7 @@ public interface ApiService {
             @Query("offset") int offset
     );
 
-    // GET - Animes em tendência
+    // GET - Trending anime
     @GET("anime/ranking")
     Call<AnimeRankingResponse> getAnimeRanking(
             @Query("ranking_type") String rankingType,
@@ -52,7 +52,7 @@ public interface ApiService {
             @Query("fields") String fields
     );
 
-    // POST/PUT - Adicionar/Atualizar anime na lista
+    // POST/PUT - Add/Update anime to the list
     @FormUrlEncoded
     @PUT("anime/{anime_id}/my_list_status")
     Call<UpdateAnimeStatusResponse> updateAnimeStatus(
@@ -70,7 +70,7 @@ public interface ApiService {
             @Field("comments") String comments
     );
 
-    // DELETE - Remover anime da lista
+    // DELETE - Remove anime from list
     @DELETE("anime/{anime_id}/my_list_status")
     Call<Void> deleteAnimeFromList(@Path("anime_id") int animeId);
 

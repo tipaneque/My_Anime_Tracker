@@ -6,7 +6,6 @@ public class AnimeNode {
     @SerializedName("node")
     private Anime node;
 
-    // Getters and Setters
     public Anime getNode() {
         return node;
     }
